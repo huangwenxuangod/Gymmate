@@ -97,7 +97,11 @@ uvicorn app.main:app --reload
 
 - `deepseek-v4-flash`
 
-部署到 RackNerd 的完整方案见：
+当前国内服务器极速部署方案见：
+
+- `backend/DEPLOYMENT_CHINA_FAST.md`
+
+旧的 RackNerd 部署说明见：
 
 - `backend/DEPLOYMENT_RACKNERD.md`
 
