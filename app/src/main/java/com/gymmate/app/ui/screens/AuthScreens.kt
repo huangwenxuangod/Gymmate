@@ -37,9 +37,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.gymmate.app.BuildConfig
 import com.gymmate.app.data.ApiRepository
 import com.gymmate.app.data.UserProfile
 import com.gymmate.app.ui.AppAssets
+import retrofit2.HttpException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,6 +58,8 @@ fun LoginScreen(
     var devCode by remember { mutableStateOf<String?>(null) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
+    val apiBaseUrl = BuildConfig.API_BASE_URL
+    val buildLabel = "v${BuildConfig.VERSION_NAME} (${BuildConfig.BUILD_TYPE})"
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         LazyColumn(
@@ -67,6 +71,12 @@ fun LoginScreen(
                     imageRes = AppAssets.loginHero,
                     title = "Gymmate",
                     subtitle = "极简训练助手。先登录，再把今天该练什么变得明确。",
+                )
+            }
+            item {
+                HintCard(
+                    title = "当前连接",
+                    body = "$apiBaseUrl\n$buildLabel",
                 )
             }
             item {
@@ -104,7 +114,7 @@ fun LoginScreen(
                                 }.onSuccess {
                                     devCode = it.devCode
                                 }.onFailure {
-                                    error = it.message ?: "验证码发送失败"
+                                    error = formatRequestError("验证码发送失败", it)
                                 }
                                 loading = false
                             }
@@ -124,7 +134,7 @@ fun LoginScreen(
                                 }.onSuccess {
                                     onLoggedIn(it.token, it.user)
                                 }.onFailure {
-                                    error = it.message ?: "登录失败"
+                                    error = formatRequestError("登录失败", it)
                                 }
                                 loading = false
                             }
@@ -147,6 +157,16 @@ fun LoginScreen(
                 }
             }
         }
+    }
+}
+
+private fun formatRequestError(prefix: String, throwable: Throwable): String {
+    val httpCode = (throwable as? HttpException)?.code()
+    val detail = throwable.message?.takeIf { it.isNotBlank() }
+    return buildString {
+        append(prefix)
+        if (httpCode != null) append(" · HTTP $httpCode")
+        if (detail != null) append("\n").append(detail)
     }
 }
 
