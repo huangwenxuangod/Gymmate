@@ -69,14 +69,18 @@ jobs:
             app/build/outputs/apk/release/*.apk
 
       - name: Prepare release APK path
-        id: release_apk
+        id: apk_paths
         shell: bash
         run: |
+          DEBUG_APK_PATH="$(find app/build/outputs/apk/debug -maxdepth 1 -name '*.apk' | head -n 1)"
           APK_PATH="$(find app/build/outputs/apk/release -maxdepth 1 -name '*.apk' | head -n 1)"
+          echo "debug_apk_path=${DEBUG_APK_PATH}" >> "$GITHUB_OUTPUT"
           echo "apk_path=${APK_PATH}" >> "$GITHUB_OUTPUT"
 
-      - name: Publish APK to GitHub Release
+      - name: Publish APKs to GitHub Release
         if: ${{ github.event_name == 'release' }}
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ steps.release_apk.outputs.apk_path }}
+          files: |
+            ${{ steps.apk_paths.outputs.debug_apk_path }}
+            ${{ steps.apk_paths.outputs.apk_path }}
