@@ -100,7 +100,13 @@ Android App -> Nginx : 80/443 -> FastAPI/Uvicorn : 127.0.0.1:8000
 
 ### Step 1: prepare DNS
 
-Point:
+Current server IP:
+
+- `107.172.148.170`
+
+If you do not have a domain yet, you can deploy and access the backend directly with this IP first.
+
+Later, when you buy a domain, point:
 
 - `api.yourdomain.com`
 
@@ -110,15 +116,25 @@ to:
 
 ### Step 2: upload repo once or clone manually
 
+If you only have IP for now, use:
+
+```bash
+DOMAIN=107.172.148.170 bash deploy/bootstrap_racknerd.sh
+```
+
+You can replace it with a real domain later.
+
+### Step 2: clone your real repo
+
 SSH into the server and run:
 
 ```bash
 mkdir -p /opt/gymmate
 cd /opt/gymmate
-git clone https://github.com/yourname/yourrepo.git repo
+git clone https://github.com/huangwenxuangod/Gymmate.git repo
 cd repo/backend
 chmod +x deploy/bootstrap_racknerd.sh deploy/deploy_from_git.sh deploy/deploy_gymmate.sh deploy/enable_https.sh
-DOMAIN=api.yourdomain.com bash deploy/bootstrap_racknerd.sh
+DOMAIN=107.172.148.170 bash deploy/bootstrap_racknerd.sh
 ```
 
 This will:
@@ -156,7 +172,7 @@ This is now the main deployment flow.
 Run on the server:
 
 ```bash
-REPO_URL=https://github.com/yourname/yourrepo.git \
+REPO_URL=https://github.com/huangwenxuangod/Gymmate.git \
 GIT_BRANCH=main \
 APP_ROOT=/opt/gymmate \
 bash /opt/gymmate/repo/backend/deploy/deploy_from_git.sh
@@ -187,7 +203,7 @@ Then on the server:
 ```bash
 cd /opt/gymmate/repo
 git pull
-REPO_URL=https://github.com/yourname/yourrepo.git GIT_BRANCH=main APP_ROOT=/opt/gymmate bash backend/deploy/deploy_from_git.sh
+REPO_URL=https://github.com/huangwenxuangod/Gymmate.git GIT_BRANCH=main APP_ROOT=/opt/gymmate bash backend/deploy/deploy_from_git.sh
 ```
 
 If you want it even simpler later, we can wrap this into one alias like:
@@ -199,10 +215,14 @@ deploy-gymmate
 That wrapper now exists. The simplest server-side update command is:
 
 ```bash
-REPO_URL=https://github.com/yourname/yourrepo.git GIT_BRANCH=main APP_ROOT=/opt/gymmate bash /opt/gymmate/repo/backend/deploy/deploy_gymmate.sh
+REPO_URL=https://github.com/huangwenxuangod/Gymmate.git GIT_BRANCH=main APP_ROOT=/opt/gymmate bash /opt/gymmate/repo/backend/deploy/deploy_gymmate.sh
 ```
 
 ## 8. Enable HTTPS
+
+You only need this after you have a real domain.
+
+With IP only, skip this step for now.
 
 After DNS is effective:
 
@@ -215,13 +235,19 @@ DOMAIN=api.yourdomain.com EMAIL=you@example.com bash /opt/gymmate/repo/backend/d
 After the server is ready, Android should point to:
 
 ```text
-https://api.yourdomain.com/
+http://107.172.148.170/
 ```
 
 Current Android config is now split by build type:
 
 - `debug` -> local LAN backend
-- `release` -> production domain
+- `release` -> current RackNerd IP
+
+When you have a real domain and HTTPS later, switch release to:
+
+```text
+https://api.yourdomain.com/
+```
 
 ## 10. Service commands
 
@@ -252,7 +278,7 @@ curl http://127.0.0.1:8000/health
 Check public health:
 
 ```bash
-curl https://api.yourdomain.com/health
+curl http://107.172.148.170/health
 ```
 
 ## 11. Pressure judgment

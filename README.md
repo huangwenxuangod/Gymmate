@@ -100,3 +100,7 @@ uvicorn app.main:app --reload
 部署到 RackNerd 的完整方案见：
 
 - `backend/DEPLOYMENT_RACKNERD.md`
+
+当前仓库实际 GitHub 地址：
+
+- `https://github.com/huangwenxuangod/Gymmate`
