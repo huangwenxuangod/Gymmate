@@ -17,6 +17,17 @@ android {
     namespace = "com.gymmate.app"
     compileSdk = 34
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(envKeystorePath!!)
+                storePassword = envKeystorePassword
+                keyAlias = envKeyAlias
+                keyPassword = envKeyPassword
+            }
+        }
+    }
+
     defaultConfig {
         applicationId = "com.gymmate.app"
         minSdk = 28
@@ -69,17 +80,6 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-
-    if (hasReleaseSigning) {
-        signingConfigs {
-            create("release") {
-                storeFile = file(envKeystorePath!!)
-                storePassword = envKeystorePassword
-                keyAlias = envKeyAlias
-                keyPassword = envKeyPassword
-            }
         }
     }
 }
