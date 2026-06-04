@@ -13,3 +13,6 @@ backend/__pycache__/
 backend/app/__pycache__/
 backend/gymmate.db
 
+*.jks
+*.keystore
+*.base64.txt

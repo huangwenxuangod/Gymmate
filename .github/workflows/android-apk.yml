@@ -5,9 +5,14 @@ on:
   push:
     branches:
       - main
+  release:
+    types:
+      - published
 
 jobs:
   build-apk:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     env:
       ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -62,3 +67,16 @@ jobs:
           name: gymmate-release-apk
           path: |
             app/build/outputs/apk/release/*.apk
+
+      - name: Prepare release APK path
+        id: release_apk
+        shell: bash
+        run: |
+          APK_PATH="$(find app/build/outputs/apk/release -maxdepth 1 -name '*.apk' | head -n 1)"
+          echo "apk_path=${APK_PATH}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish APK to GitHub Release
+        if: ${{ github.event_name == 'release' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.release_apk.outputs.apk_path }}
