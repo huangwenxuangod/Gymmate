@@ -5,6 +5,7 @@ APP_USER="${APP_USER:-gymmate}"
 APP_GROUP="${APP_GROUP:-$APP_USER}"
 APP_ROOT="${APP_ROOT:-/opt/gymmate}"
 DOMAIN="${DOMAIN:-}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [[ -z "${DOMAIN}" ]]; then
   echo "DOMAIN is required"
@@ -33,8 +34,8 @@ fi
 
 python3 -m venv "${APP_ROOT}/venv"
 
-install -m 644 "${APP_ROOT}/backend/deploy/gymmate-api.service" /etc/systemd/system/gymmate-api.service
-sed "s|__DOMAIN__|${DOMAIN}|g" "${APP_ROOT}/backend/deploy/nginx.gymmate.conf" > /etc/nginx/sites-available/gymmate.conf
+install -m 644 "${SCRIPT_DIR}/gymmate-api.service" /etc/systemd/system/gymmate-api.service
+sed "s|__DOMAIN__|${DOMAIN}|g" "${SCRIPT_DIR}/nginx.gymmate.conf" > /etc/nginx/sites-available/gymmate.conf
 ln -sf /etc/nginx/sites-available/gymmate.conf /etc/nginx/sites-enabled/gymmate.conf
 rm -f /etc/nginx/sites-enabled/default
 
