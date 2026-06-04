@@ -104,3 +104,25 @@ uvicorn app.main:app --reload
 当前仓库实际 GitHub 地址：
 
 - `https://github.com/huangwenxuangod/Gymmate`
+
+## GitHub 下载 APK
+
+仓库已配置 GitHub Actions 自动构建 APK。
+
+使用方式：
+
+1. push 到 `main`
+2. 打开 GitHub 仓库的 `Actions`
+3. 进入 `Build Android APK`
+4. 在本次构建的 `Artifacts` 中下载：
+   - `gymmate-debug-apk`
+   - `gymmate-release-apk`
+
+如果未配置签名，release 产物会是未签名 APK。
+
+如需 GitHub 自动生成正式可分发的 signed release APK，请在 GitHub Secrets 中配置：
+
+- `ANDROID_KEYSTORE_BASE64`
+- `ANDROID_KEYSTORE_PASSWORD`
+- `ANDROID_KEY_ALIAS`
+- `ANDROID_KEY_PASSWORD`
