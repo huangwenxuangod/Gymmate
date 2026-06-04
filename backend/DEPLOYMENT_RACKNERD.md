@@ -117,7 +117,7 @@ mkdir -p /opt/gymmate
 cd /opt/gymmate
 git clone https://github.com/yourname/yourrepo.git repo
 cd repo/backend
-chmod +x deploy/bootstrap_racknerd.sh deploy/deploy_from_git.sh deploy/enable_https.sh
+chmod +x deploy/bootstrap_racknerd.sh deploy/deploy_from_git.sh deploy/deploy_gymmate.sh deploy/enable_https.sh
 DOMAIN=api.yourdomain.com bash deploy/bootstrap_racknerd.sh
 ```
 
@@ -196,6 +196,12 @@ If you want it even simpler later, we can wrap this into one alias like:
 deploy-gymmate
 ```
 
+That wrapper now exists. The simplest server-side update command is:
+
+```bash
+REPO_URL=https://github.com/yourname/yourrepo.git GIT_BRANCH=main APP_ROOT=/opt/gymmate bash /opt/gymmate/repo/backend/deploy/deploy_gymmate.sh
+```
+
 ## 8. Enable HTTPS
 
 After DNS is effective:
@@ -211,6 +217,11 @@ After the server is ready, Android should point to:
 ```text
 https://api.yourdomain.com/
 ```
+
+Current Android config is now split by build type:
+
+- `debug` -> local LAN backend
+- `release` -> production domain
 
 ## 10. Service commands
 

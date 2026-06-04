@@ -50,5 +50,5 @@ ufw --force enable || true
 
 echo "Bootstrap complete. Next:"
 echo "1. Edit ${APP_ROOT}/shared/.env"
-echo "2. Run deploy_from_git.sh"
+echo "2. Run deploy_gymmate.sh"
 echo "3. Optionally enable HTTPS with certbot"

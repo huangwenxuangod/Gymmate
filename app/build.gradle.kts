@@ -18,12 +18,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField("String", "API_BASE_URL", "\"http://172.27.2.189:8000/\"")
+        buildConfigField("String", "API_BASE_URL", "\"https://api.yourdomain.com/\"")
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_BASE_URL", "\"http://172.27.2.189:8000/\"")
+        }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "API_BASE_URL", "\"https://api.yourdomain.com/\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
