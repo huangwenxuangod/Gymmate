@@ -1,0 +1,15 @@
+.gradle/
+.idea/
+build/
+local.properties
+*.iml
+captures/
+.DS_Store
+
+app/build/
+
+backend/.venv/
+backend/__pycache__/
+backend/app/__pycache__/
+backend/gymmate.db
+

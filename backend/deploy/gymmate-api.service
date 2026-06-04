@@ -1,0 +1,17 @@
+[Unit]
+Description=Gymmate FastAPI Backend
+After=network.target
+
+[Service]
+Type=simple
+User=gymmate
+Group=gymmate
+WorkingDirectory=/opt/gymmate/backend
+EnvironmentFile=/opt/gymmate/shared/.env
+ExecStart=/opt/gymmate/venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 2
+Restart=always
+RestartSec=3
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target
