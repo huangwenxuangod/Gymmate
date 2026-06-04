@@ -39,16 +39,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField("String", "API_BASE_URL", "\"http://107.172.148.170/\"")
+        buildConfigField("String", "API_BASE_URL", "\"http://129.204.200.38/\"")
     }
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_BASE_URL", "\"http://107.172.148.170/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://129.204.200.38/\"")
         }
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "API_BASE_URL", "\"http://107.172.148.170/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://129.204.200.38/\"")
             if (hasReleaseSigning) {
                 signingConfig = signingConfigs.getByName("release")
             }
